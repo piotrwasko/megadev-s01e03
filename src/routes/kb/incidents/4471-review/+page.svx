@@ -1,0 +1,102 @@
+---
+layout: runbook
+title: '#4471 review · separate symptoms before merging'
+owner: piotrwasko
+status: investigated, not fixed
+reviewed: '2026-11-24'
+signature: 'piotrwasko / GPT-6.1 Sol / S01E03 / 2026-11-24'
+---
+
+<script>
+  import InvestigationTable from '#lib/kb/InvestigationTable.svelte';
+  import QueueTimeline from '#lib/kb/QueueTimeline.svelte';
+  import DedupeExplorer from '#lib/kb/DedupeExplorer.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+  const { signature } = metadata;
+</script>
+
+This review supersedes the diagnosis in [the old incident page](/kb/incidents/4471),
+not its history. The old page calls everything one parser bug. Neither the report
+bodies nor the form-specific logic support one fix for every report.
+
+## Scope and counts
+
+This is the supplied export dated 4 October 2026, not a claim about today's queue.
+Counts below are computed at render time from unique report IDs merged into #4471.
+Refresh the source data and rebuild before using these counts for current triage.
+
+<InvestigationTable />
+
+## Separate work
+
+### Shared parser: month and day swapped
+
+The shared parser reads month first, including for tenants whose locale is day
+first. R-41200 reports 7 April becoming 4 July; R-41201 corrects the direction
+of its own example. The tenant directory, not the browser locale, determines the
+expected order. Intake tags are guesses, not ground truth.
+
+Fix the shared parser to honour the tenant's declared date convention, or require
+an unambiguous structured date. Reproduce with day-first tenants over app and
+email paths and booking-v2 form submissions. Add regressions for ambiguous and
+unambiguous dates; do not silently accept an invalid day/month combination.
+
+### booking-v3 hint: the UI tells users the wrong order
+
+The booking-v3 field prints `MM/DD/YYYY`, while the form reads the tenant's day-first
+order. This is not fixed merely by changing the shared parser. R-41230 is a form
+report from copper.studio, whose tenant locale is es-ES and form is booking-v3.
+R-41241 uses an en-US browser, but its tenant alder.physio is de-DE and booking-v3.
+
+Generate the hint and validation from the same tenant date convention. Test
+copper.studio, alder.physio and pale.harbour, including a browser locale that
+disagrees with the tenant. Users following the printed hint must get the date
+they were told to enter.
+
+### One-day shifts and premature delivery: investigate separately
+
+R-41202 describes 12 May versus 11 May, R-41209 a June-only one-day shift,
+R-41344 different days in Lisbon and Toronto, and R-41620 Tuesday becoming Monday.
+R-41236 says an invite arrived before the booking existed. These symptoms do not
+demonstrate month/day transposition. The existing `causeOf` function files them
+under parser solely from tenant and channel; that classification is not proof.
+
+Keep these reports visible in a separate investigation. Timezone conversion,
+date-only serialisation, DST and delivery-event ordering are hypotheses to test,
+not established root causes. Obtain original timestamps, timezone identifiers,
+booking and delivery event IDs, then reproduce. Split this investigation again
+if the evidence shows different causes. Never count these IDs twice.
+
+## Why the merge rule failed
+
+[Decision 0001](/kb/decisions/0001-dedupe-by-subject) merged on normalised subjects
+without reading the body. A shared title does not establish a shared cause, and
+different titles can describe the same cause. Tenant locale, booking-form version,
+entry channel and a reproducible failure distinguish the paths.
+
+The existing explorer below already disagrees with the old prose: the same tenant
+can have different causes through form versus app, and different subjects can
+share a cause. An unknown tenant needs investigation, not an automatic merge.
+The explorer is a diagnostic aid, not an oracle for the exceptional report bodies.
+
+<DedupeExplorer />
+
+Follow [replacement decision 0002](/kb/decisions/0002-dedupe-by-evidence).
+Do not edit accepted decision 0001 to erase the historical policy.
+
+## Received is not merged
+
+<QueueTimeline ticket={4471} />
+
+Reports arrived from April, but many were merged together in July. A merge spike
+shows desk processing, not necessarily when the product broke. Compare
+`receivedAt` and `mergedAt` before dating an incident. This chart's date window is
+the original export window; it does not show later live reports.
+
+## Status
+
+These are tracked problems, not shipped fixes. No deployment or resolution is
+demonstrated by this export. Issue links and evidence are listed in the repository
+README. Keep reports separate until a shared mechanism is established.
+
+<RenderStamp {signature} />

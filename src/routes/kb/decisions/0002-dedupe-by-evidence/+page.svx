@@ -1,0 +1,40 @@
+---
+layout: runbook
+title: '0002 · Merge on evidence of a shared cause'
+owner: piotrwasko
+status: proposed
+reviewed: '2026-11-24'
+signature: 'piotrwasko / GPT-6.1 Sol / S01E03 / 2026-11-24'
+---
+
+<script>
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+  const { signature } = metadata;
+</script>
+
+## Context
+
+Decision 0001 merged equal subjects without reading the report. Review of #4471
+found different mechanisms under one title and one-day symptoms that the existing
+classifier does not explain. The old triage page is also older than the layout's
+180-day review threshold. Its accepted status does not make it current evidence.
+
+## Replacement rule (proposed for desk adoption)
+
+Read the body. Resolve the tenant's locale and booking-form version; check channel,
+actual versus expected behaviour, and reproduction evidence. Merge only when
+these establish the same mechanism. A subject match is a search aid, not a verdict.
+Different subjects do not rule out one mechanism. Unknown tenant or conflicting
+symptoms means investigate separately. Count reports by unique ID, never export row.
+
+Record why each group belongs together. Keep minority symptoms visible. Treat
+`meta.intakeTag` and the current classifier as aids to review, not proof. Prefer a
+separate provisional investigation over hiding unexplained reports in a majority.
+
+## Consequences
+
+Triage takes more reading, but engineering receives distinct, auditable work.
+Link this record from the review without rewriting the accepted decision 0001.
+Desk adoption is still required; no code or prose here claims that approval.
+
+<RenderStamp {signature} />
