@@ -38,7 +38,7 @@ Exported 2026-10-04 from the `support` repo, `apps/kb/` → `src/`.
 ## S01E03 investigation
 
 This repository contains the supplied export plus a signed review. Nothing here
-claims that a production fix shipped. Snapshot counts are not live queue counts.
+claims an independently verified production fix. Snapshot counts are not live queue counts.
 
 | Work | Distinct reports | GitHub issue |
 | --- | ---: | --- |
@@ -84,3 +84,11 @@ The export ends on 4 October. Revalidate against the desk's current views before
 using it as today's operational state. The received/merged timeline distinguishes
 arrival from desk processing; a July merge spike does not date the onset of a bug.
 Reproduction steps in the issues are derived from the export, not live product tests.
+
+### Engineering update after first submission
+
+The course's live desk update reports #4471 closed 5 October: parser fixed by
+`fix(dates): parse dd/mm for eu locales`; hint won't fix because booking-v3 was
+retired. Accordingly #1 is closed **completed**, #2 **not planned**. Issue #3
+remains an open investigation; the update does not prove its symptoms resolved.
+See [update provenance](evidence/engineering-update.md).

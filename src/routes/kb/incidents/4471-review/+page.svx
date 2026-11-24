@@ -2,7 +2,7 @@
 layout: runbook
 title: '#4471 review · separate symptoms before merging'
 owner: piotrwasko
-status: investigated, not fixed
+status: parser fixed; hint retired; anomalies open
 reviewed: '2026-11-24'
 signature: 'piotrwasko / GPT-6.1 Sol / S01E03 / 2026-11-24'
 ---
@@ -93,10 +93,22 @@ shows desk processing, not necessarily when the product broke. Compare
 `receivedAt` and `mergedAt` before dating an incident. This chart's date window is
 the original export window; it does not show later live reports.
 
-## Status
+## Current desk update
 
-These are tracked problems, not shipped fixes. No deployment or resolution is
-demonstrated by this export. Issue links and evidence are listed in the repository
-README. Keep reports separate until a shared mechanism is established.
+After the first submission, the course's live engineering update reported
+**#4471 closed on 5 October**. The parser is **fixed** by
+`fix(dates): parse dd/mm for eu locales`; [GitHub issue #1](https://github.com/piotrwasko/megadev-s01e03/issues/1)
+is closed **completed** on that evidence. The hint is **won't fix**, because the
+booking-v3 form was retired; [issue #2](https://github.com/piotrwasko/megadev-s01e03/issues/2)
+is closed **not planned**, not falsely labelled fixed.
+
+The engineering update is evidence from the desk, not an independent production
+test. It does not establish resolution of the exceptional report bodies;
+[investigation #3](https://github.com/piotrwasko/megadev-s01e03/issues/3) remains open.
+The counts above still describe the original export. Closing a ticket changes
+its workflow state, not its historical report count or the symptoms it contained.
+
+Exact update provenance is saved in `evidence/engineering-update.md`. Keep reports
+separate until a shared mechanism is established.
 
 <RenderStamp {signature} />
