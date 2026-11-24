@@ -4,7 +4,7 @@ title: '#4471 review · separate symptoms before merging'
 owner: piotrwasko
 status: parser fixed; hint retired; anomalies open
 reviewed: '2026-11-24'
-signature: 'piotrwasko / GPT-6.1 Sol / S01E03 / 2026-11-24'
+signature: 'v1.eyJzdG9yeSI6Im9mZiIsInN1YiI6IjM1NjgiLCJhdWQiOiJjaGFsbGVuZ2U6d2hhdC1pdC1zaG93cyIsImlhdCI6MTc5NTUzMDIzOCwiZXhwIjoxNzk1NjE2NjM4fQ.JP0HGs-BKKVuBsUuK85jIZFCP36WRyTWuR72XCOuHNg'
 ---
 
 <script>
